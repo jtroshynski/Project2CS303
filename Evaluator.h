@@ -28,6 +28,7 @@ public:
 	//Michelle Got this from GitHub by kartikkukreja
 	bool hasLowerPriority(char op1, char op2);
 	bool check_valid();
+	int convert_to_int(string number);
 };
 
 
