@@ -32,3 +32,30 @@ void Evaluator::parse_expression(string expression)
 	//parse string into two stacks, int_stack and char_stack
 	//
 }
+
+// To check for Priority Got this from GitHub by kartikkukreja
+bool Evaluator::hasLowerPriority(char op1, char op2)
+{
+	//PEMDAS
+	switch (op1)
+	{
+	case '(': 
+		return false;
+		break;
+	case '-':
+		return op2 == '-';
+		break;
+	case '+':
+		return op2 == '-' || op2 '+' ;
+		break;
+	case '*':
+		return true;
+		break;
+	case '/':
+		return true;
+		break;
+	default:
+		error = true; 
+		return false;
+	}
+}
