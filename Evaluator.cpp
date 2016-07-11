@@ -82,4 +82,6 @@ bool Evaluator::check_valid()
 int Evaluator::convert_to_int(string number)
 {
 	//convert a string to an integer value 
+	int result = stoi(number);
+	return result;
 }
