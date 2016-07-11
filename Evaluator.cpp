@@ -13,6 +13,14 @@ Evaluator::Evaluator(){};
 bool Evaluator::check_bool(string expression)
 {
 	//if expression contains boolean characters, return true
+	for (int i = 0; i < expression.length(); i++)
+	{
+		if ((expression[i] == '>' || '<' || '!' || '&' || '|') || (expression[i] == '=' && expression[i+1] == '='))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 bool Evaluator::eval_bool(string expression)
