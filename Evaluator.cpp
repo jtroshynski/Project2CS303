@@ -59,3 +59,18 @@ bool Evaluator::hasLowerPriority(char op1, char op2)
 		return false;
 	}
 }
+
+bool Evaluator::check_valid()
+{
+	/*
+	check for the following:
+	Expression cannot start with a closing parenthesis
+	Expression cannot start with a binary operator
+	Expression cannot contain two binary operators in a row
+	Expression cannot contain two operands in a row (15 + 2 3)
+	A unary operand cannot be followed by a binary operator (++>3)
+	Division by zero
+	Expression cannot contain letters
+	Expression must have correct parenthesis
+	*/
+}
