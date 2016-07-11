@@ -8,19 +8,23 @@
 #define _EVALUATOR_H_
 
 #include <string>
+#include "list.h"
+#include "list_iterator.h"
+#include "list_const_iterator.h"
 using namespace std;
 
 class Evaluator
 {
 private:
-
-
+	list <int> int_stack;
+	list <char> char_stack;
 
 public:
 	Evaluator();
 	bool check_bool(string expression);
 	bool eval_bool(string expression);
 	int eval_int(string expression);
+	void parse_expression(string expression);
 };
 
 
