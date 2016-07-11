@@ -5,7 +5,7 @@
 //Project 2A
 
 #include "Evaluator.h"
-
+#include <string>
 using namespace std;
 
 Evaluator::Evaluator(){};
