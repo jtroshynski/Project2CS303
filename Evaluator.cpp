@@ -30,7 +30,11 @@ int Evaluator::eval_int(string expression)
 void Evaluator::parse_expression(string expression)
 {
 	//parse string into two stacks, int_stack and char_stack
-	//check next char, if space, skip. if int, add to int_stack. if anything else, add to char_stack.
+	//check next char, if space, skip. if 0-9, convert to integer and add to int_stack. if anything else, add to char_stack.
+	
+	//if next char is 0-9, convert to integer
+	string number; // == current position in expression <- also have to account for larger numbers
+	convert_to_int(number);
 }
 
 // To check for Priority Got this from GitHub by kartikkukreja
@@ -73,4 +77,9 @@ bool Evaluator::check_valid()
 	Expression cannot contain letters
 	Expression must have correct parenthesis
 	*/
+}
+
+int Evaluator::convert_to_int(string number)
+{
+	//convert a string to an integer value 
 }
