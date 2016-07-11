@@ -6,6 +6,7 @@
 
 #include "Evaluator.h"
 #include <string>
+#include <iostream>
 using namespace std;
 
 int main(){
@@ -16,10 +17,12 @@ int main(){
 	if (eval1.check_bool(expression)) //boolean
 	{
 		bool bool_result = eval1.eval_bool(expression);
+		cout << expression << " = " << bool_result << endl;
 	}
 	else //integer
 	{
 		int int_result = eval1.eval_int(expression);
+		cout << expression << " = " << int_result << endl;
 	}
 
 	return 0;
