@@ -25,6 +25,8 @@ public:
 	bool eval_bool(string expression);
 	int eval_int(string expression);
 	void parse_expression(string expression);
+	//Michelle Got this from GitHub by kartikkukreja
+	bool hasLowerPriority(char op1, char op2);
 };
 
 
