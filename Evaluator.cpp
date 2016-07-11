@@ -30,7 +30,7 @@ int Evaluator::eval_int(string expression)
 void Evaluator::parse_expression(string expression)
 {
 	//parse string into two stacks, int_stack and char_stack
-	//
+	//check next char, if space, skip. if int, add to int_stack. if anything else, add to char_stack.
 }
 
 // To check for Priority Got this from GitHub by kartikkukreja
