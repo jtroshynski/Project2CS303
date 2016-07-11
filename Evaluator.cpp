@@ -17,14 +17,18 @@ bool Evaluator::check_bool(string expression)
 
 bool Evaluator::eval_bool(string expression)
 {
-	//call function to parse string into two stacks, one for integers and another for characters
-
-  //
+	parse_expression(expression); //parse string into two stacks, one for integers and another for characters
+	//
 }
 
 int Evaluator::eval_int(string expression)
 {
-	//call function to parse string into two stacks, one for integers and another for characters
+	parse_expression(expression); //parse string into two stacks, one for integers and another for characters
+	//
+}
 
+void Evaluator::parse_expression(string expression)
+{
+	//parse string into two stacks, int_stack and char_stack
 	//
 }
