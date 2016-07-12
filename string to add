@@ -1,0 +1,32 @@
+#include "stdafx.h"
+#include <cctype>
+#include <iostream>
+#include<conio.h>
+
+using namespace std; 
+
+int to_Number(char array[], int i, int sum);
+int main() {
+  char str[] = { "34ac4" };
+  cout << "The string is " << str << endl; 
+  int a = to_Number(str,0,0); 
+  cout << "\nThe sum of all numeric digits is " << a << endl;
+  _getch();
+  return 0;
+  
+  } 
+  
+  int to_Number(char array[], int i, int sum) 
+    {
+    if (i == strlen(array))
+    { 
+    return sum;
+    } 
+    else if (isdigit(array[i])) {
+  return sum + (array[i] - '0') + to_Number(array, i + 1, sum); 
+  } else if (!isdigit(array[i])) {
+  return to_Number(array, i + 1, sum); }
+}
+Output:
+The string is 34ac4
+The sum of all numeric digits is 11
