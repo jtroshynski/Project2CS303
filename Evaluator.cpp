@@ -48,6 +48,7 @@ void Evaluator::parse_expression(string expression)
 // To check for Priority Got this from GitHub by kartikkukreja
 bool Evaluator::hasLowerPriority(char op1, char op2)
 {
+	bool error;
 	//PEMDAS
 	switch (op1)
 	{
@@ -58,7 +59,7 @@ bool Evaluator::hasLowerPriority(char op1, char op2)
 		return op2 == '-';
 		break;
 	case '+':
-		return op2 == '-' || op2 '+' ;
+		return op2 == '-' || '+' ;
 		break;
 	case '*':
 		return true;
@@ -72,18 +73,99 @@ bool Evaluator::hasLowerPriority(char op1, char op2)
 	}
 }
 
+
 bool Evaluator::check_valid()
 {
+	char firstToken, nextToken;
+	char token; 
+	char divisor;
+//Expression cannot start with a closing parenthesis
+	try {
+		if (firstToken == ')') {
+			throw 001;	
+		}
+		//else run
+	}catch (int x) { //x is specific character location
+		cout << "Expression can't start with a closing parenthesis @ char: " 
+			 << x << "." << endl;
+	 }
+
+//	Expression cannot start with a binary operator
+	try {
+		if (firstToken == '<' || '>' || '&' || '|' || '='){
+			throw 002;
+		}
+		//else run
+	}
+	catch (int x) { //x is specific character location
+		cout << "Expression can't start with a binary operator @ char: "
+		   	 << x << "." << endl;
+	}
+
+//	Expression cannot contain two binary operators in a row
+	try {
+		if (token == '&&&&' || '||||') {
+			throw 003;
+		}
+		//else run
+	}
+	catch (int x) { //x is specific character location
+		cout << "Two binary operators in a row @ char: "
+			 << x << "." << endl;
+	}
+
+//Expression cannot contain two operands in a row (15 + 2 3)
+	try {
+		if (isdigit(token) && isdigit(nextToken)) {
+			throw 004;
+		}
+		//else run
+	}
+	catch (int x) { //x is specific character location
+		cout << "Two operands in a row @ char: "
+			 << x << "." << endl;
+	}
+	
+// A unary operand cannot be followed by a binary operator (++>3)
+	try {
+		while (token == '+' || '-' || '*' || '/') {
+			if (nextToken == '<' || '>' || '&' || '|') {
+				throw 005;
+			}
+			//else run
+		}
+	}
+	catch (int x) { //x is specific character location
+		cout << "A unary operand cannot be followed by a binary operator @ char: "
+			 << x << "." << endl;
+	}
+
+//Division by zero	
+	try {
+		while (token == '/') {
+			if (nextToken == '0' || 0) {
+			throw 006;
+			}
+		}
+		//else run
+	}
+	catch (int x) { //x is specific character location
+		cout << "Division by zero @ char: "
+			 << x << "." << endl;
+	}
+
 	/*
 	check for the following:
-	Expression cannot start with a closing parenthesis
-	Expression cannot start with a binary operator
-	Expression cannot contain two binary operators in a row
-	Expression cannot contain two operands in a row (15 + 2 3)
-	A unary operand cannot be followed by a binary operator (++>3)
-	Division by zero
 	Expression cannot contain letters
 	Expression must have correct parenthesis
+
+	//below completed
+	//Expression cannot start with a binary operator
+	//Expression cannot contain two binary operators in a row
+	//Expression cannot contain two operands in a row (15 + 2 3)
+	//A unary operand cannot be followed by a binary operator (++>3)
+	//Division by zero
+	
 	*/
 }
 
