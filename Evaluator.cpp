@@ -6,6 +6,8 @@
 
 #include "Evaluator.h"
 #include <string>
+#include <iostream>
+
 using namespace std;
 
 Evaluator::Evaluator(){};
@@ -76,9 +78,12 @@ bool Evaluator::hasLowerPriority(char op1, char op2)
 
 bool Evaluator::check_valid()
 {
-	char firstToken, nextToken;
-	char token; 
-	char divisor;
+	char firstToken, nextToken, currentToken;
+	
+
+//still need 'Expression must have correct parenthesis'
+
+	
 //Expression cannot start with a closing parenthesis
 	try {
 		if (firstToken == ')') {
@@ -104,7 +109,7 @@ bool Evaluator::check_valid()
 
 //	Expression cannot contain two binary operators in a row
 	try {
-		if (token == '&&&&' || '||||') {
+		if (currentToken == '&&&&' || '||||') {
 			throw 003;
 		}
 		//else run
@@ -116,7 +121,7 @@ bool Evaluator::check_valid()
 
 //Expression cannot contain two operands in a row (15 + 2 3)
 	try {
-		if (isdigit(token) && isdigit(nextToken)) {
+		if (isdigit(currentToken) && isdigit(nextToken)) {
 			throw 004;
 		}
 		//else run
@@ -128,7 +133,7 @@ bool Evaluator::check_valid()
 	
 // A unary operand cannot be followed by a binary operator (++>3)
 	try {
-		while (token == '+' || '-' || '*' || '/') {
+		while (currentToken == '+' || '-' || '*' || '/') {
 			if (nextToken == '<' || '>' || '&' || '|') {
 				throw 005;
 			}
@@ -142,7 +147,7 @@ bool Evaluator::check_valid()
 
 //Division by zero	
 	try {
-		while (token == '/') {
+		while (currentToken == '/') {
 			if (nextToken == '0' || 0) {
 			throw 006;
 			}
@@ -154,12 +159,38 @@ bool Evaluator::check_valid()
 			 << x << "." << endl;
 	}
 
+
+
+//Expression cannot contain letters
+	try {
+
+		if (isalpha(currentToken)) {
+
+			throw 004;
+
+		}
+
+		//else run
+
+	}
+
+	catch (int x) { //x is specific character location
+
+		cout << "Expression cannot contain letters @ char: "
+
+			<< x << "." << endl;
+
+	}
+
+	
 	/*
 	check for the following:
-	Expression cannot contain letters
+	
 	Expression must have correct parenthesis
-
-	//below completed
+	
+	
+//below completed
+	//Expression cannot contain letters
 	//Expression cannot start with a binary operator
 	//Expression cannot contain two binary operators in a row
 	//Expression cannot contain two operands in a row (15 + 2 3)
