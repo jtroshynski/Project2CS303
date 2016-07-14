@@ -36,6 +36,9 @@ bool Evaluator::check_bool(string expression)
 	return false;
 }
 
+//Need condition to handle decrement and increment
+//(expression[i] == '-' && expression[i + 1] == '-') || (expression[i] == '+' && expression[i + 1] == '+') ||
+
 bool Evaluator::eval_bool(string expression)
 {
 	parse_expression(expression); //parse string into two stacks, one for integers and another for characters
@@ -60,7 +63,11 @@ int Evaluator::parse_expression(string expression)
 		}
 		else if (is_operator(next_char)) {
 			int result = eval_op(next_char);
-			operand_stack.push(result);
+			
+	//add--if the next char is '--', '++', '&&', ||, '=='//hold off for now 7-14jeh
+
+			
+			operator_stack.push(result);
 		}
 		else {
 			throw Syntax_Error("Invalid character encountered");
@@ -80,7 +87,7 @@ int Evaluator::parse_expression(string expression)
 		throw Syntax_Error("Stack is empty");
 	}
 }
-void Evaluator::parse_expression(string expression)
+/*void Evaluator::parse_expression(string expression)
 {
 //parse string into two stacks, int_stack and char_stacK
 	// to parse is to evaluate the string, it can do math
@@ -141,7 +148,7 @@ void Evaluator::parse_expression(string expression)
 			} 
 				
 		}
-}
+}*/
 
 // To check for Priority Got this from GitHub by kartikkukreja
 bool Evaluator::hasLowerPriority(char op1, char op2)
@@ -188,30 +195,32 @@ bool Evaluator::is_balanced(const string expression) {
 	while (balanced && (iter != expression.end())) {
 		char next_ch = *iter;
 		if (is_open(next_ch)) {
-			parenthesis_stack.push(next_ch);
+			operator_stack.push(next_ch);
 		}
 		else if (is_close(next_ch)) {
-			if (parenthesis_stack.empty()) {
+			if (operator_stack.empty()) {
 				balanced = false;
 			}
 			else {
-				char top_ch = parenthesis_stack.top();
-				parenthesis_stack.pop();
+				char top_ch = operator_stack.top();
+				operator_stack.pop();
 				balanced = OPEN.find(top_ch) == CLOSE.find(next_ch);
 			}
 		}
 		++iter;
 	}
-	return balanced && parenthesis_stack.empty();
+	return balanced && operator_stack.empty();
 }
 
 
 
 bool Evaluator::check_valid()
 {
-	char firstToken, nextToken, currentToken;
+	char firstToken = expression[0];
+	char nextToken, currentToken;
 	
-
+	
+	
 	
 //Expression cannot start with a closing parenthesis
 	try {
@@ -238,8 +247,11 @@ bool Evaluator::check_valid()
 
 //	Expression cannot contain two binary operators in a row
 	try {
-		if (currentToken == '&&&&' || '||||') {
-			throw 003;
+		for (int i = 0; i < expression.length(); i++){
+			currentToken = expression[i];
+				if (currentToken == '&&&&' || '||||') {
+					throw 003;
+				}
 		}
 		//else run
 	}
@@ -248,10 +260,14 @@ bool Evaluator::check_valid()
 			 << x << "." << endl;
 	}
 
-//Expression cannot contain two operands in a row (15 + 2 3)
+//Expression cannot contain two operands in a row (15 + 2 3)//////need to fix
 	try {
-		if (isdigit(currentToken) && isdigit(nextToken)) {
-			throw 004;
+		for (int i = 0; i < expression.length(); i++){
+			currentToken = expression[i];
+			nextToken = expression[i + 1];
+			if (isdigit(currentToken) && isdigit(nextToken)) {
+				throw 004;
+			}
 		}
 		//else run
 	}
@@ -262,23 +278,30 @@ bool Evaluator::check_valid()
 	
 // A unary operand cannot be followed by a binary operator (++>3)
 	try {
-		while (currentToken == '+' || '-' || '*' || '/') {
-			if (nextToken == '<' || '>' || '&' || '|') {
-				throw 005;
+		for (int i = 0; i < expression.length(); i++){
+			currentToken = expression[i];
+			nextToken = expression[i + 1];
+			while (currentToken == '+' || '-' || '*' || '/') {
+				if (nextToken == '<' || '>' || '&' || '|') {
+					throw 005;
+				}
 			}
-			//else run
-		}
+		}//else run
 	}
 	catch (int x) { //x is specific character location
 		cout << "A unary operand cannot be followed by a binary operator @ char: "
 			 << x << "." << endl;
 	}
 
-//Division by zero	
+//Simple Division by zero	//Jeremy is working on the extension of this as a function
 	try {
-		while (currentToken == '/') {
-			if (nextToken == '0' || 0) {
-			throw 006;
+		for (int i = 0; i < expression.length(); i++){
+			currentToken = expression[i];
+			nextToken = expression[i + 1];
+			while (currentToken == '/') {
+				if (nextToken == '0' || 0) {
+					throw 006;
+				}
 			}
 		}
 		//else run
@@ -292,15 +315,15 @@ bool Evaluator::check_valid()
 
 //Expression cannot contain letters
 	try {
+		for (int i = 0; i < expression.length(); i++){
+			currentToken = expression[i];
 
-		if (isalpha(currentToken)) {
+			if (isalpha(currentToken)) {
 
-			throw 004;
-
+				throw 004;
+			}
 		}
-
 		//else run
-
 	}
 
 	catch (int x) { //x is specific character location
@@ -328,7 +351,6 @@ bool Evaluator::check_valid()
 	
 	*/
 }
-
 int Evaluator::convert_to_int(string number)
 {
 	//convert a string to an integer value 
