@@ -39,12 +39,65 @@ int Evaluator::eval_int(string expression)
 
 void Evaluator::parse_expression(string expression)
 {
-	//parse string into two stacks, int_stack and char_stack
+//parse string into two stacks, int_stack and char_stacK
+	// to parse is to evaluate the string, it can do math
+	// check for <= => and full numbers
 	//check next char, if space, skip. if 0-9, convert to integer and add to int_stack. if anything else, add to char_stack.
-	
 	//if next char is 0-9, convert to integer
 	string number; // == current position in expression <- also have to account for larger numbers
+	string character; // to hold the char to put it in the char_stack
 	convert_to_int(number);
+		for (int i = 0; expression.length(); i++)
+		{
+			if (expression[i] == " ");
+			else if (isdigit(expression[i]))
+			{
+				number = expression[i]; 
+				for (int j = i++; expression.length(); j++)
+				{
+					if (isdigit(expression[j])) 
+					{
+						//append to number
+						i++;
+					}
+					else
+					{
+						break;
+						 
+					}
+						
+				}
+				if(!number.empty())
+				{
+					add_to_stack(convert_to_int(number), int_stack); //create add_to_stack function gets the number and the int_stack
+				}
+				number.clear(); 
+				
+				if(!isdigit(expression[i])) //should go here?
+				{
+					character = expression[i];
+						for (int j = i++; expression.length(); j++)
+						{
+							if(!isdigit(expression[j]))
+							{
+								//append to character
+								i++;
+							}
+							else
+							{
+								break;
+							}
+						}
+					 
+				}
+				if(!character.empty())
+				{
+					add_to_stack(convert_to_int(number), char_stack);
+				}
+				character.clear();
+			} 
+				
+		}
 }
 
 // To check for Priority Got this from GitHub by kartikkukreja
