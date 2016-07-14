@@ -23,8 +23,10 @@ private:
 	
 	// Data fields
 		static const string OPERATORS;
-		std::stack<int> operand_stack;
 		static const int PRECEDENCE[];
+
+		std::stack<int> operand_stack;
+		std::stack<char> parenthesis_stack;
 
 
 	/** Evaluates the current operator.
@@ -48,19 +50,24 @@ private:
 	int precedence(char op) const {
 		return PRECEDENCE[OPERATORS.find(op)];
 	}
+	bool is_balanced(const string expression) {
+		return PRECEDENCE[OPERATORS.find(op)];
+	}
+	int parse_expression(string expression);
+	bool check_valid();
 
-
+	
+	
 public:
 	Evaluator();
 	
 	bool check_bool(string expression);
 	bool eval_bool(string expression);
 	int eval_int(string expression);
-	int parse_expression(string expression);
+
 	void parse_expression(string expression);
 	//Michelle Got this from GitHub by kartikkukreja
 	bool hasLowerPriority(char op1, char op2);
-	bool check_valid();
 	int convert_to_int(string number);
 };
 
