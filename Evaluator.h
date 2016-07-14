@@ -25,8 +25,11 @@ private:
 		static const string OPERATORS;
 		static const int PRECEDENCE[];
 
+
 		std::stack<int> operand_stack;
 		std::stack<char> parenthesis_stack;
+		std::stack<char> operator_stack;
+
 
 
 	/** Evaluates the current operator.
@@ -36,6 +39,9 @@ private:
 	@throws Syntax_Error if top is attempted on an empty stack
 	*/
 	int eval_op(char op);
+	
+	
+	
 	/** Determines whether a character is an operator.
 	@param ch The character to be tested
 	@return true if the character is an operator
