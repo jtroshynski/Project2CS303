@@ -69,6 +69,7 @@ public:
 	//Michelle Got this from GitHub by kartikkukreja
 	bool hasLowerPriority(char op1, char op2);
 	int convert_to_int(string number);
+	bool divide_by_zero(char opp, int num2)
 };
 
 
