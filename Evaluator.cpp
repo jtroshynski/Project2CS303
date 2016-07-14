@@ -14,8 +14,12 @@ using std::istringstream;
 
 using namespace std;
 
-const string Evaluator::OPERATORS = "^*/%+-";
-const int Evaluator::PRECEDENCE[] = { 7,6,6,6,5,5 };
+const string Evaluator::OPERATORS = "^*/%+-&|!=<>";
+const int Evaluator::PRECEDENCE[] = { 7,6,6,6,5,5,2,3,3,4 };
+// The set of opening parentheses.
+const string OPEN = "([{";
+// The corresponding set of closing parentheses.
+const string CLOSE = ")]}";
 
 Evaluator::Evaluator(){};
 
@@ -168,12 +172,45 @@ bool Evaluator::hasLowerPriority(char op1, char op2)
 }
 
 
+bool is_open(char ch) {
+	return OPEN.find(ch) != string::npos;
+}
+
+bool is_close(char ch) {
+	return CLOSE.find(ch) != string::npos;
+}
+
+bool Evaluator::is_balanced(const string expression) {
+	// A stack for the open parentheses that haven't been matched
+	
+	bool balanced = true;
+	string::const_iterator iter = expression.begin();
+	while (balanced && (iter != expression.end())) {
+		char next_ch = *iter;
+		if (is_open(next_ch)) {
+			parenthesis_stack.push(next_ch);
+		}
+		else if (is_close(next_ch)) {
+			if (parenthesis_stack.empty()) {
+				balanced = false;
+			}
+			else {
+				char top_ch = parenthesis_stack.top();
+				parenthesis_stack.pop();
+				balanced = OPEN.find(top_ch) == CLOSE.find(next_ch);
+			}
+		}
+		++iter;
+	}
+	return balanced && parenthesis_stack.empty();
+}
+
+
+
 bool Evaluator::check_valid()
 {
 	char firstToken, nextToken, currentToken;
 	
-
-//still need 'Expression must have correct parenthesis'
 
 	
 //Expression cannot start with a closing parenthesis
