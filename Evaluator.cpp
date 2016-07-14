@@ -4,11 +4,18 @@
 //CS 303
 //Project 2A
 
+#include "Syntax_Error.h"
 #include "Evaluator.h"
 #include <string>
 #include <iostream>
+#include <sstream>
+
+using std::istringstream;
 
 using namespace std;
+
+const string Evaluator::OPERATORS = "^*/%+-";
+const int Evaluator::PRECEDENCE[] = { 7,6,6,6,5,5 };
 
 Evaluator::Evaluator(){};
 
@@ -36,7 +43,39 @@ int Evaluator::eval_int(string expression)
 	parse_expression(expression); //parse string into two stacks, one for integers and another for characters
 	//
 }
-
+int Evaluator::parse_expression(string expression)
+{
+	istringstream tokens(expression);
+	char next_char;
+	while (tokens >> next_char) {
+		if (isdigit(next_char)) {
+			tokens.putback(next_char);
+			int value;
+			tokens >> value;
+			operand_stack.push(value);
+		}
+		else if (is_operator(next_char)) {
+			int result = eval_op(next_char);
+			operand_stack.push(result);
+		}
+		else {
+			throw Syntax_Error("Invalid character encountered");
+		}
+	}
+	if (!operand_stack.empty()) {
+		int answer = operand_stack.top();
+		operand_stack.pop();
+		if (operand_stack.empty()) {
+			return answer;
+		}
+		else {
+			throw Syntax_Error("Stack should be empty");
+		}
+	}
+	else {
+		throw Syntax_Error("Stack is empty");
+	}
+}
 void Evaluator::parse_expression(string expression)
 {
 //parse string into two stacks, int_stack and char_stacK
