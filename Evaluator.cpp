@@ -214,7 +214,7 @@ bool Evaluator::is_balanced(const string expression) {
 
 
 
-bool Evaluator::check_valid()
+bool Evaluator::check_valid(int characterPositionOfError, string expression)
 {
 	char firstToken = expression[0];
 	char nextToken, currentToken;
