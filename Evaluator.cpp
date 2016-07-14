@@ -335,3 +335,13 @@ int Evaluator::convert_to_int(string number)
 	int result = stoi(number);
 	return result;
 }
+
+bool Evaluator::divide_by_zero(char opp, int num2)
+{
+	//return false if second int is zero
+	if( (opp == '/' || opp == '%') && (num2 == 0))
+	{
+		return false;
+	}
+	return true;
+}    
