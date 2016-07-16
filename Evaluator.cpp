@@ -14,8 +14,8 @@ using std::istringstream;
 
 using namespace std;
 
-const string Evaluator::OPERATORS = "^*/%+-&|!=<>";
-const int Evaluator::PRECEDENCE[] = { 7,6,6,6,5,5,2,3,3,4 };
+const string Evaluator::OPERATORS = "^*/%+-&|!=<>()[]{}";
+const int Evaluator::PRECEDENCE[16] = { 7,6,6,6,5,5,2,3,3,4,-1,-1,-1,-1,-1,-1,-1,-1 };
 // The set of opening parentheses.
 const string OPEN = "([{";
 // The corresponding set of closing parentheses.
@@ -178,7 +178,7 @@ bool Evaluator::hasLowerPriority(char op1, char op2)
 	}
 }
 
-
+//is_open and is_close find matching parenthesis in expression
 bool is_open(char ch) {
 	return OPEN.find(ch) != string::npos;
 }
@@ -188,33 +188,40 @@ bool is_close(char ch) {
 }
 
 bool Evaluator::is_balanced(const string expression) {
-	// A stack for the open parentheses that haven't been matched
+	// Uses temporary stack  
+	//has been tested
+	//to determine if parentheses in expression match
 	
+
 	bool balanced = true;
 	string::const_iterator iter = expression.begin();
 	while (balanced && (iter != expression.end())) {
 		char next_ch = *iter;
 		if (is_open(next_ch)) {
-			operator_stack.push(next_ch);
+			parenthesis_stack.push(next_ch);
+			//cout << next_ch << " was pushed onto parenthesis stack " << endl;
 		}
 		else if (is_close(next_ch)) {
-			if (operator_stack.empty()) {
+			if (parenthesis_stack.empty()) {
 				balanced = false;
+				throw Syntax_Error("Unmatched parenthesis entered ");
 			}
 			else {
-				char top_ch = operator_stack.top();
-				operator_stack.pop();
+				char top_ch = parenthesis_stack.top();
+				parenthesis_stack.pop();
 				balanced = OPEN.find(top_ch) == CLOSE.find(next_ch);
+				//cout << top_ch << " Parenthesis in temporary stack are balanced. " << next_char << endl;
+
 			}
 		}
 		++iter;
 	}
-	return balanced && operator_stack.empty();
+	return balanced && parenthesis_stack.empty();
 }
 
 int eval_op(char op) {
 	//eval_op came from postfix evaluator
-	// Jeremy I only put this here because it looked like a good start . Do with it what you will
+	// Jeremy, I only put this here because it looked like a good start . Do with it what you will~James
 	if (operand_stack.empty())
 		throw Syntax_Error("Stack is empty");
 	int rhs = operand_stack.top();
@@ -264,7 +271,7 @@ bool Evaluator::check_valid(string str){
 //Expression cannot contain two binary operators in a row
 //Expression cannot contain two operands in a row (15 + 2 3)
 //A unary operand cannot be followed by a binary operator (++>3)
-//Division by zero
+//Simpl division by zero
 
 */
 
@@ -348,8 +355,18 @@ try {
 	}
 
 	//run code here
-
 ////////////////////////////////////////////
+	is_balanced(str);//checks if Parenthesis are balanced. Throws error if unbalanced
+	//divide_by_zero(); checks expressions after '/' for eval to 0
+
+	check_bool(str);
+		//if check_bool returns true
+			//run eval_bool(str);//evaluates the stacks when boolean 
+			//else run eval_int(str);//evaluates the stacks when arithmetic 
+	//parse_expression(str);adds characters and digits to their appropriate stacks
+
+
+///////////////////////////////////////////
 
 }   //End of try
 
