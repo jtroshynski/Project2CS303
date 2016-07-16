@@ -284,8 +284,10 @@ try {
 		nextToken = str[i + 1];
 		nextNextToken = str[i + 2];
 
-		cout << strlen(str) << endl;
-		cout << currentToken << " " << nextToken << " " << nextNextToken << endl;
+
+	//for testing
+	//	cout << strlen(str) << endl;
+	//	cout << currentToken << " " << nextToken << " " << nextNextToken << endl;
 
 
 		//Expression cannot start with a binary operator
