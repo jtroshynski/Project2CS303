@@ -358,12 +358,13 @@ try {
 ////////////////////////////////////////////
 	is_balanced(str);//checks if Parenthesis are balanced. Throws error if unbalanced
 	//divide_by_zero(); checks expressions after '/' for eval to 0
+	
+	//parse_expression(str);adds characters and digits to their appropriate stacks
 
 	check_bool(str);
 		//if check_bool returns true
 			//run eval_bool(str);//evaluates the stacks when boolean 
 			//else run eval_int(str);//evaluates the stacks when arithmetic 
-	//parse_expression(str);adds characters and digits to their appropriate stacks
 
 
 ///////////////////////////////////////////
