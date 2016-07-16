@@ -212,145 +212,151 @@ bool Evaluator::is_balanced(const string expression) {
 	return balanced && operator_stack.empty();
 }
 
+int eval_op(char op) {
+	//eval_op came from postfix evaluator
+	// Jeremy I only put this here because it looked like a good start . Do with it what you will
+	if (operand_stack.empty())
+		throw Syntax_Error("Stack is empty");
+	int rhs = operand_stack.top();
+	//cout << "push rhs " << rhs << endl;
+	operand_stack.pop();
 
 
-bool Evaluator::check_valid(int characterPositionOfError, string expression)
-{
-	char firstToken = expression[0];
-	char nextToken, currentToken;
-	
-	
-	
-	
-//Expression cannot start with a closing parenthesis
-	try {
-		if (firstToken == ')') {
-			throw 001;	
-		}
-		//else run
-	}catch (int x) { //x is specific character location
-		cout << "Expression can't start with a closing parenthesis @ char: " 
-			 << x << "." << endl;
-	 }
+	if (operand_stack.empty())
+		throw Syntax_Error("Stack is empty");
+	int lhs = operand_stack.top();
+	//cout << "push lhs " << lhs << endl;
+	operand_stack.pop();
 
-//	Expression cannot start with a binary operator
-	try {
-		if (firstToken == '<' || '>' || '&' || '|' || '='){
-			throw 002;
-		}
-		//else run
+	int result = 0;
+	switch (op) {
+	case '+': result = lhs + rhs;
+		cout << "lhs + rhs = " << lhs << " + " << rhs << " = " << result << endl;
+		break;
+	case '-': result = lhs - rhs;
+		cout << "lhs - rhs = " << lhs << " - " << rhs << " = " << result << endl;
+		break;
+	case '*': result = lhs * rhs;
+		cout << "lhs * rhs = " << lhs << " * " << rhs << " = " << result << endl;
+		break;
+	case '/': result = lhs / rhs;
+		cout << "lhs / rhs = " << lhs << " / " << rhs << " = " << result << endl;
+		break;
+	case '%': result = lhs % rhs;
+		break;
 	}
-	catch (int x) { //x is specific character location
-		cout << "Expression can't start with a binary operator @ char: "
-		   	 << x << "." << endl;
-	}
+	//cout << result << endl;
 
-//	Expression cannot contain two binary operators in a row
-	try {
-		for (int i = 0; i < expression.length(); i++){
-			currentToken = expression[i];
-				if (currentToken == '&&&&' || '||||') {
-					throw 003;
-				}
-		}
-		//else run
-	}
-	catch (int x) { //x is specific character location
-		cout << "Two binary operators in a row @ char: "
-			 << x << "." << endl;
-	}
-
-//Expression cannot contain two operands in a row (15 + 2 3)//////need to fix
-	try {
-		for (int i = 0; i < expression.length(); i++){
-			currentToken = expression[i];
-			nextToken = expression[i + 1];
-			if (isdigit(currentToken) && isdigit(nextToken)) {
-				throw 004;
-			}
-		}
-		//else run
-	}
-	catch (int x) { //x is specific character location
-		cout << "Two operands in a row @ char: "
-			 << x << "." << endl;
-	}
-	
-// A unary operand cannot be followed by a binary operator (++>3)
-	try {
-		for (int i = 0; i < expression.length(); i++){
-			currentToken = expression[i];
-			nextToken = expression[i + 1];
-			while (currentToken == '+' || '-' || '*' || '/') {
-				if (nextToken == '<' || '>' || '&' || '|') {
-					throw 005;
-				}
-			}
-		}//else run
-	}
-	catch (int x) { //x is specific character location
-		cout << "A unary operand cannot be followed by a binary operator @ char: "
-			 << x << "." << endl;
-	}
-
-//Simple Division by zero	//Jeremy is working on the extension of this as a function
-	try {
-		for (int i = 0; i < expression.length(); i++){
-			currentToken = expression[i];
-			nextToken = expression[i + 1];
-			while (currentToken == '/') {
-				if (nextToken == '0' || 0) {
-					throw 006;
-				}
-			}
-		}
-		//else run
-	}
-	catch (int x) { //x is specific character location
-		cout << "Division by zero @ char: "
-			 << x << "." << endl;
-	}
+	return result;
 
 
-
-//Expression cannot contain letters
-	try {
-		for (int i = 0; i < expression.length(); i++){
-			currentToken = expression[i];
-
-			if (isalpha(currentToken)) {
-
-				throw 004;
-			}
-		}
-		//else run
-	}
-
-	catch (int x) { //x is specific character location
-
-		cout << "Expression cannot contain letters @ char: "
-
-			<< x << "." << endl;
-
-	}
-
-	
-	/*
-	check for the following:
-	
-	Expression must have correct parenthesis
-	
-	
-//below completed
-	//Expression cannot contain letters
-	//Expression cannot start with a binary operator
-	//Expression cannot contain two binary operators in a row
-	//Expression cannot contain two operands in a row (15 + 2 3)
-	//A unary operand cannot be followed by a binary operator (++>3)
-	//Division by zero
-	
-	*/
 }
+
+
+
+bool Evaluator::check_valid(char *str){
+/*	//this code has been tested
+//check_valid() checks for the following:
+
+//Expression must have correct beginning parenthesis
+//Expression cannot contain letters
+//Expression cannot start with a binary operator
+//Expression cannot contain two binary operators in a row
+//Expression cannot contain two operands in a row (15 + 2 3)
+//A unary operand cannot be followed by a binary operator (++>3)
+//Division by zero
+
+*/
+
+char firstToken = str[0];
+char currentToken;
+char nextToken;
+char nextNextToken;
+int count = 0;
+
+
+
+try {
+
+	for (unsigned int i = 0; i < strlen(str); i++) {
+		count++;
+		currentToken = str[i];
+		nextToken = str[i + 1];
+		nextNextToken = str[i + 2];
+
+		cout << strlen(str) << endl;
+		cout << currentToken << " " << nextToken << " " << nextNextToken << endl;
+
+
+		//Expression cannot start with a binary operator
+		if (firstToken == '<' || firstToken == '>' || firstToken == '&' || firstToken == '|' ||
+			firstToken == '=') {
+			cout << "Expression can't start with a binary operator @ char: ";
+			count++;
+			throw "first";
+		}
+
+		//Expression cannot start with a closing parenthesis
+		if ((firstToken == ')') || (firstToken == ']') || (firstToken == '}')) {
+			cout << "Open parenthesis must come before closing parenthesis @ char: ";
+			throw 001;
+		}
+
+
+		// A unary operand cannot be followed by a binary operator (++>3)
+		if (((currentToken == '+' || currentToken == '-' || currentToken == '*' || currentToken == '/' ||
+			currentToken == '%') && (nextToken == '<' || nextToken == '>' || nextToken == '&' ||
+			nextToken == '|'))) {
+
+			cout << "A unary operand cannot be followed by a binary operator @ char: ";
+			throw 003;
+		}
+
+		//Expression cannot contain two binary operators in a row (&&& or |||)
+		if ((currentToken == '&' && nextToken == '&' && nextNextToken == '&') ||
+			(currentToken == '|' && nextToken == '|' && nextNextToken == '|') ||
+			(currentToken == '&' && nextToken == '|') || (currentToken == '|' && nextToken == '&')) {
+			cout << "Too many or wrong successive binary operators starting @ char: ";
+			throw 004;
+		}
+
+		//Expression cannot contain two operands in a row (15 + 2 3)
+		if (isdigit(currentToken) && nextToken == ' ' && isdigit(nextNextToken)) {
+			count++;
+			cout << "Either an extra space was inputted or you are missing an operator @ char: ";
+			throw 005;
+		}
+
+
+
+		//Simple case division by zero	//Jeremy is working on the extension of this as a function
+		if (currentToken == '/') {
+			if (nextToken == '0' || 0) {
+				cout << "Division by zero @ char: ";
+				throw 006;
+			}
+		}
+
+		//Expression cannot contain letters
+		if (isalpha(currentToken)) {
+			cout << "Expression cannot contain letters @ char: ";
+			throw 007;
+		}
+
+	}
+
+	//run code here
+
+////////////////////////////////////////////
+
+}   //End of try
+
+	catch (...) { //count is specific character location
+		cout << count << "." << endl;
+	}//end of catch
+
+}
+
 int Evaluator::convert_to_int(string number)
 {
 	//convert a string to an integer value 
