@@ -38,9 +38,9 @@ private:
 	@param op A character representing the operator
 	@throws Syntax_Error if top is attempted on an empty stack
 	*/
-	int eval_op(char op);
-	
-	
+	int eval_op(char op);{
+		
+	}
 	
 	/** Determines whether a character is an operator.
 	@param ch The character to be tested
@@ -49,6 +49,7 @@ private:
 	bool is_operator(char ch) const {
 		return OPERATORS.find(ch) != string npos;	
 	}
+	
 	/** Determines the precedence of an operator.
 	@param op The operator
 	@return The precedence
@@ -56,11 +57,35 @@ private:
 	int precedence(char op) const {
 		return PRECEDENCE[OPERATORS.find(op)];
 	}
+	
+	/** Determines if expression has unmatching parenthesis.
+	@param op The expression
+	@return The precedence
+	*/
 	bool is_balanced(const string expression) {
 		return PRECEDENCE[OPERATORS.find(op)];
 	}
-	int parse_expression(string expression);
-	bool check_valid(string str);
+	
+	/** Determines whether characters in string are operands or aoperators
+	  and adds them to their respective appropriate stacks--
+	@param op The expression
+	@return two separate stacks operator_stack and operand_stack.
+	*/
+	int parse_expression(string expression); {
+	
+	}
+	bool check_valid(string str); {
+	
+	}
+	
+	/** Determines '--' or '++' occur in the expression and adds one
+	 * to the successor if so.
+	@param op The expression
+	@return updated integer.
+	*/
+	int decrementIncrement(string str); {
+	
+	}
 
 	
 	
