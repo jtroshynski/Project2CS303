@@ -60,7 +60,7 @@ private:
 		return PRECEDENCE[OPERATORS.find(op)];
 	}
 	int parse_expression(string expression);
-	bool check_valid(char *str);
+	bool check_valid(string str);
 
 	
 	
