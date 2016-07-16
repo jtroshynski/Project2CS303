@@ -50,6 +50,33 @@ int Evaluator::eval_int(string expression)
 	parse_expression(expression); //parse string into two stacks, one for integers and another for characters
 	//
 }
+
+//crude increment decrement 
+//not sure how to push result onto stack at the appropraite time
+int decrementIncrement(string str) {
+	char firstToken = str[0];
+	char currentToken;
+	char nextToken;
+	char nextNextToken;
+	int count = 0;
+
+	for (unsigned int i = 0; i < str.length(); i++) {
+		count++;
+		currentToken = str[i];
+		nextToken = str[i + 1];
+		nextNextToken = str[i + 2];
+		if (currentToken == '-' && nextToken == '-') {
+			nextNextToken = nextNextToken - 1;
+			cout << "decrement " << nextNextToken << endl;
+
+		}
+		if (currentToken == '+' && nextToken == '+') {
+			nextNextToken = nextNextToken + 1;
+			cout << "increment" << nextNextToken << endl;
+		}
+	}
+}
+
 int Evaluator::parse_expression(string expression)
 {
 	istringstream tokens(expression);
