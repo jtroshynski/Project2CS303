@@ -278,7 +278,7 @@ int count = 0;
 
 try {
 
-	for (unsigned int i = 0; i < strlen(str); i++) {
+	for (unsigned int i = 0; i < str.length(); i++) {
 		count++;
 		currentToken = str[i];
 		nextToken = str[i + 1];
