@@ -254,7 +254,7 @@ int eval_op(char op) {
 
 
 
-bool Evaluator::check_valid(char *str){
+bool Evaluator::check_valid(string str){
 /*	//this code has been tested
 //check_valid() checks for the following:
 
