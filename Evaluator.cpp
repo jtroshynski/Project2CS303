@@ -15,7 +15,7 @@ using std::istringstream;
 using namespace std;
 
 const string Evaluator::OPERATORS = "^*/%+-&|!=<>()[]{}";
-const int Evaluator::PRECEDENCE[16] = { 7,6,6,6,5,5,2,3,3,4,-1,-1,-1,-1,-1,-1,-1,-1 };
+const int Evaluator::PRECEDENCE[18] = { 7,6,6,6,5,5,2,3,3,4,-1,-1,-1,-1,-1,-1,-1,-1 };
 // The set of opening parentheses.
 const string OPEN = "([{";
 // The corresponding set of closing parentheses.
@@ -36,31 +36,34 @@ bool Evaluator::check_bool(string expression)
 	return false;
 }
 
-//Need condition to handle decrement and increment
-//(expression[i] == '-' && expression[i + 1] == '-') || (expression[i] == '+' && expression[i + 1] == '+') ||
 
+//What is the plan with eval_bool and eval_int?
 bool Evaluator::eval_bool(string expression)
 {
 	parse_expression(expression); //parse string into two stacks, one for integers and another for characters
 	//
+		return false;//temp test value
 }
 
 int Evaluator::eval_int(string expression)
 {
 	parse_expression(expression); //parse string into two stacks, one for integers and another for characters
 	//
-}
+		return 0;//temp test value
 
+}
+//Need condition to handle decrement and increment
+//(expression[i] == '-' && expression[i + 1] == '-') || (expression[i] == '+' && expression[i + 1] == '+') ||
 //crude increment decrement 
 //not sure how to push result onto stack at the appropraite time
-int decrementIncrement(string str) {
+int Evaluator::decrementIncrement(string str) {
 	char firstToken = str[0];
 	char currentToken;
 	char nextToken;
 	char nextNextToken;
 	int count = 0;
 
-	for (unsigned int i = 0; i < str.length(); i++) {
+	for (unsigned int i = 0; i < str.length()-1; i++) {
 		count++;
 		currentToken = str[i];
 		nextToken = str[i + 1];
@@ -75,6 +78,8 @@ int decrementIncrement(string str) {
 			cout << "increment" << nextNextToken << endl;
 		}
 	}
+		return nextNextToken;
+
 }
 
 int Evaluator::parse_expression(string expression)
@@ -246,8 +251,15 @@ bool Evaluator::is_balanced(const string expression) {
 	return balanced && parenthesis_stack.empty();
 }
 
-int eval_op(char op) {
-	//eval_op came from postfix evaluator
+//this function is currently called in int parse_expression 
+//This function would have popped the two operands off the operand stack and applied the operator.
+//So.. it is basically mathing()
+int Evaluator::eval_op(char next_char){
+	cout << "mathing " << next_char << endl;
+	return next_char;
+}
+
+/*	//eval_op came from postfix evaluator
 	// Jeremy, I only put this here because it looked like a good start . Do with it what you will~James
 	if (operand_stack.empty())
 		throw Syntax_Error("Stack is empty");
@@ -284,11 +296,11 @@ int eval_op(char op) {
 	return result;
 
 
-}
+}*/
 
 
 
-bool Evaluator::check_valid(string str){
+bool Evaluator::check_valid(string expression){
 /*	//this code has been tested
 //check_valid() checks for the following:
 
@@ -302,7 +314,7 @@ bool Evaluator::check_valid(string str){
 
 */
 
-char firstToken = str[0];
+char firstToken = expression[0];
 char currentToken;
 char nextToken;
 char nextNextToken;
@@ -312,16 +324,12 @@ int count = 0;
 
 try {
 
-	for (unsigned int i = 0; i < str.length(); i++) {
+	for (unsigned int i = 0; i < expression.length()-1; i++) {
 		count++;
-		currentToken = str[i];
-		nextToken = str[i + 1];
-		nextNextToken = str[i + 2];
+		currentToken = expression[i];
+		nextToken = expression[i + 1];
+		nextNextToken = expression[i + 2];
 
-
-	//for testing
-	//	cout << strlen(str) << endl;
-	//	cout << currentToken << " " << nextToken << " " << nextNextToken << endl;
 
 
 		//Expression cannot start with a binary operator
@@ -383,16 +391,24 @@ try {
 
 	//run code here
 ////////////////////////////////////////////
-	is_balanced(str);//checks if Parenthesis are balanced. Throws error if unbalanced
-	//divide_by_zero(); checks expressions after '/' for eval to 0
+	Evaluator::is_balanced(expression);//checks if Parenthesis are balanced. Throws error if unbalanced
 	
-	//parse_expression(str);adds characters and digits to their appropriate stacks
+	//Evaluator::divide_by_zero(opp, num2); //checks expressions after '/' for eval to 0
+	
+	Evaluator::parse_expression(expression);//adds characters and digits to their appropriate stacks
 
-	check_bool(str);
-		//if check_bool returns true
-			//run eval_bool(str);//evaluates the stacks when boolean 
-			//else run eval_int(str);//evaluates the stacks when arithmetic 
+	Evaluator::check_bool(expression); //check if expression should be evaluated as a boolean or an integer value. True = boolean, False = integer
 
+	if (Evaluator::check_bool(expression)) //boolean
+	{
+		bool bool_result = Evaluator::eval_bool(expression);
+		cout << expression << " = " << bool_result << endl;
+	}
+	else //integer
+	{
+		int int_result = Evaluator::eval_int(expression);
+		cout << expression << " = " << int_result << endl;
+	}
 
 ///////////////////////////////////////////
 
@@ -411,6 +427,7 @@ int Evaluator::convert_to_int(string number)
 	return result;
 }
 
+//Is this done?
 bool Evaluator::divide_by_zero(char opp, int num2)
 {
 	//return false if second int is zero
@@ -419,7 +436,7 @@ bool Evaluator::divide_by_zero(char opp, int num2)
 		return false;
 	}
 	return true;
-}    
+}   
 
 bool Evaluator::bool_mathing() 
 //TO DO:
