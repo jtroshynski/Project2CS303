@@ -420,3 +420,96 @@ bool Evaluator::divide_by_zero(char opp, int num2)
 	}
 	return true;
 }    
+
+bool Evaluator::bool_mathing() 
+//TO DO:
+//ADD UNARY OPERATOR EVALUATIONS
+{
+	while (!operator_stack.empty() && !operand_stack.empty())
+	{
+		char op = (operator_stack.top());
+		//operator_stack.pop();
+		int rhs = operand_stack.top();
+		operand_stack.pop();
+		int lhs = operand_stack.top();
+		operand_stack.pop();
+		int result = 0;
+
+		switch (op) {
+		case '+': result = lhs + rhs;
+		case '-': result = lhs - rhs;
+		case '*': result = lhs * rhs;
+		case '/': 
+			if (divide_by_zero(op, rhs)) //if expression is valid
+			{
+				result = lhs / rhs;
+			}
+			else
+			{
+				cout << "Error" << endl; //throw divide by zero error
+				break;
+			}
+
+		case '%': 
+			if (divide_by_zero(op, rhs)) //if expression is valid
+			{
+				result = lhs % rhs;
+			}
+			else
+			{
+				cout << "Error" << endl; //throw divide by zero error
+				break;
+			}
+		}
+		operand_stack.push(result);
+	}
+}
+
+
+int Evaluator::int_mathing()
+//TO DO:
+//Account for ++ and --
+{
+	while (!operator_stack.empty() && !operand_stack.empty())
+	{
+		char op = (operator_stack.top());
+		//operator_stack.pop();
+		int rhs = operand_stack.top();
+		operand_stack.pop();
+		int lhs = operand_stack.top();
+		operand_stack.pop();
+		int result = 0;
+
+		switch (op) {
+		case '+': result = lhs + rhs;
+		case '-':
+			//if next char is also - ?
+			//deal with --
+			//else
+			result = lhs - rhs;
+		case '*': result = lhs * rhs;
+		case '/':
+			if (divide_by_zero(op, rhs)) //if expression is valid
+			{
+				result = lhs / rhs;
+			}
+			else
+			{
+				cout << "Error" << endl; //throw divide by zero error
+				break;
+			}
+
+		case '%':
+			if (divide_by_zero(op, rhs)) //if expression is valid
+			{
+				result = lhs % rhs;
+			}
+			else
+			{
+				cout << "Error" << endl; //throw divide by zero error
+				break;
+			}
+		}
+		operand_stack.push(result);
+	}
+}
