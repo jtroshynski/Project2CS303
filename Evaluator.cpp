@@ -454,12 +454,16 @@ bool Evaluator::bool_mathing()
 
 		switch (op) {
 		case '+': result = lhs + rhs;
+			break;
 		case '-': result = lhs - rhs;
+			break;
 		case '*': result = lhs * rhs;
+			break;
 		case '/': 
 			if (divide_by_zero(op, rhs)) //if expression is valid
 			{
 				result = lhs / rhs;
+				break;
 			}
 			else
 			{
@@ -471,6 +475,7 @@ bool Evaluator::bool_mathing()
 			if (divide_by_zero(op, rhs)) //if expression is valid
 			{
 				result = lhs % rhs;
+				break;
 			}
 			else
 			{
@@ -478,7 +483,9 @@ bool Evaluator::bool_mathing()
 				break;
 			}
 		case '<': result = (lhs < rhs);
+			break;
 		case '>': result = (lhs > rhs);
+			break;
 		}
 		operand_stack.push(result);
 	}
@@ -502,16 +509,20 @@ int Evaluator::int_mathing()
 
 		switch (op) {
 		case '+': result = lhs + rhs;
+			break;
 		case '-':
 			//if next char is also - ?
 			//deal with --
 			//else
 			result = lhs - rhs;
+			break;
 		case '*': result = lhs * rhs;
+			break;
 		case '/':
 			if (divide_by_zero(op, rhs)) //if expression is valid
 			{
 				result = lhs / rhs;
+				break;
 			}
 			else
 			{
@@ -523,6 +534,7 @@ int Evaluator::int_mathing()
 			if (divide_by_zero(op, rhs)) //if expression is valid
 			{
 				result = lhs % rhs;
+				break;
 			}
 			else
 			{
