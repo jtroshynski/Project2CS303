@@ -445,7 +445,7 @@ bool Evaluator::bool_mathing()
 	while (!operator_stack.empty() && !operand_stack.empty())
 	{
 		char op = (operator_stack.top());
-		//operator_stack.pop();
+		operator_stack.pop();
 		int rhs = operand_stack.top();
 		operand_stack.pop();
 		int lhs = operand_stack.top();
@@ -463,7 +463,7 @@ bool Evaluator::bool_mathing()
 			}
 			else
 			{
-				cout << "Error" << endl; //throw divide by zero error
+				cout << "ERROR: Cannot divide by zero" << endl; //throw divide by zero error
 				break;
 			}
 
@@ -474,9 +474,11 @@ bool Evaluator::bool_mathing()
 			}
 			else
 			{
-				cout << "Error" << endl; //throw divide by zero error
+				cout << "ERROR: Cannot divide by zero" << endl; //throw divide by zero error
 				break;
 			}
+		case '<': result = (lhs < rhs);
+		case '>': result = (lhs > rhs);
 		}
 		operand_stack.push(result);
 	}
@@ -490,7 +492,7 @@ int Evaluator::int_mathing()
 	while (!operator_stack.empty() && !operand_stack.empty())
 	{
 		char op = (operator_stack.top());
-		//operator_stack.pop();
+		operator_stack.pop();
 		int rhs = operand_stack.top();
 		operand_stack.pop();
 		int lhs = operand_stack.top();
