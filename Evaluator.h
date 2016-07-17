@@ -98,7 +98,6 @@ public:
 	@param op The expression
 	@return error*/
 	bool check_valid(string expression);
-	
 	bool check_bool(string expression);
 	bool eval_bool(string expression);
 	int eval_int(string expression);
@@ -109,8 +108,10 @@ public:
 	bool hasLowerPriority(char op1, char op2);
 	int convert_to_int(string number);
 	bool divide_by_zero(char opp, int num2);
-	bool bool_mathing();
+	bool bool_mathing(char op, int rhs, int lhs);
+	bool bool_mathing_wrapper();
 	int int_mathing();
+	
 };
 
 
