@@ -442,7 +442,7 @@ bool Evaluator::bool_mathing()
 //TO DO:
 //ADD UNARY OPERATOR EVALUATIONS
 {
-	while (!operator_stack.empty() && !operand_stack.empty())
+	while (!operator_stack.empty())
 	{
 		char op = (operator_stack.top());
 		operator_stack.pop();
@@ -482,6 +482,7 @@ bool Evaluator::bool_mathing()
 		}
 		operand_stack.push(result);
 	}
+	return(operator_stack.top());
 }
 
 
@@ -489,7 +490,7 @@ int Evaluator::int_mathing()
 //TO DO:
 //Account for ++ and --
 {
-	while (!operator_stack.empty() && !operand_stack.empty())
+	while (!operator_stack.empty())
 	{
 		char op = (operator_stack.top());
 		operator_stack.pop();
@@ -531,4 +532,5 @@ int Evaluator::int_mathing()
 		}
 		operand_stack.push(result);
 	}
+	return(operator_stack.top());
 }
