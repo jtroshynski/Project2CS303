@@ -10,6 +10,12 @@
 using namespace std;
 
 int main(){
+	string expression = "(1+2)* 6/(17+1)"; //enter in any expression in string format
+
+	Evaluator eval1;
+	eval1.check_valid(expression);
+	
+	/*//Moved these calls to inside check_valid 
 	Evaluator eval1;
 	string expression = ("1+2+3+4"); //enter in any expression in string format
 	eval1.check_bool(expression); //check if expression should be evaluated as a boolean or an integer value. True = boolean, False = integer
@@ -23,7 +29,7 @@ int main(){
 	{
 		int int_result = eval1.eval_int(expression);
 		cout << expression << " = " << int_result << endl;
-	}
-
+	}*/
+	getchar();
 	return 0;
 }
