@@ -438,9 +438,7 @@ bool Evaluator::divide_by_zero(char opp, int num2)
 	return true;
 }   
 
-bool Evaluator::bool_mathing() 
-//TO DO:
-//ADD UNARY OPERATOR EVALUATIONS
+bool Evaluator::bool_mathing_wrapper()
 {
 	while (!operator_stack.empty())
 	{
@@ -450,9 +448,25 @@ bool Evaluator::bool_mathing()
 		operand_stack.pop();
 		int lhs = operand_stack.top();
 		operand_stack.pop();
+		bool_mathing(op, rhs, lhs);
+	}
+	return(operator_stack.top());
+}
+
+bool Evaluator::bool_mathing() 
+//TO DO:
+//ADD UNARY OPERATOR EVALUATIONS
+{
+	while (!operator_stack.empty())
+	{
 		int result = 0;
 
 		switch (op) {
+		case ')': 
+		while (op != '(')
+		{
+			bool_mathing(operator_stack.top(), rhs, lhs);
+		}
 		case '+': result = lhs + rhs;
 			break;
 		case '-': result = lhs - rhs;
