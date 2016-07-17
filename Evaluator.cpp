@@ -515,7 +515,7 @@ int Evaluator::int_mathing()
 			}
 			else
 			{
-				cout << "Error" << endl; //throw divide by zero error
+				cout << "ERROR: Cannot divide by zero" << endl; //throw divide by zero error
 				break;
 			}
 
@@ -526,7 +526,7 @@ int Evaluator::int_mathing()
 			}
 			else
 			{
-				cout << "Error" << endl; //throw divide by zero error
+				cout << "ERROR: Cannot divide by zero" << endl; //throw divide by zero error
 				break;
 			}
 		}
