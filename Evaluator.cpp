@@ -123,10 +123,10 @@ void Evaluator::add_to_stack( int th, stack<int> stack ) {
 		operand_stack.push(th);
 		cout << "pushed digit " << th << " to operand_stack" << endl;//test print
 	}
-	else
+	else{
 		operator_stack.push(th);
 		cout << "pushed operator " << th << " to operator_stack" << endl;//test print
-
+	}
 }
 void Evaluator::parse_expression(string expression)
 {
@@ -140,7 +140,7 @@ void Evaluator::parse_expression(string expression)
 	convert_to_int(number);
 		for (int i = 0; expression.length(); i++)
 		{
-			if (expression[i] == '' '');
+			if (expression[i] == ' ');
 			else if (isdigit(expression[i]))
 			{
 				number = expression[i]; 
@@ -160,7 +160,7 @@ void Evaluator::parse_expression(string expression)
 				}
 				if(!number.empty())
 				{
-					add_to_stack(convert_to_int(number), int_stack); //create add_to_stack function gets the number and the int_stack
+					add_to_stack(convert_to_int(number), operand_stack); //create add_to_stack function gets the number and the int_stack
 				}
 				number.clear(); 
 				
@@ -183,7 +183,7 @@ void Evaluator::parse_expression(string expression)
 				}
 				if(!character.empty())
 				{
-					add_to_stack(convert_to_int(number), char_stack);
+					add_to_stack(convert_to_int(number), operator_stack);
 				}
 				character.clear();
 			} 
@@ -402,7 +402,7 @@ try {
 ////////////////////////////////////////////
 	Evaluator::is_balanced(expression);//checks if Parenthesis are balanced. Throws error if unbalanced
 	
-	//Evaluator::divide_by_zero(opp, num2); //checks expressions after '/' for eval to 0
+
 	
 	Evaluator::parse_expression(expression);//adds characters and digits to their appropriate stacks
 
