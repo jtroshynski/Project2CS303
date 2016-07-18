@@ -80,7 +80,7 @@ private:
 	@param op The expression
 	@return updated integer.
 	*/
-	int decrementIncrement(string str); 
+	void decrementIncrement(string str); 
 
 	
 	
