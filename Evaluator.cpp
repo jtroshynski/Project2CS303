@@ -63,7 +63,7 @@ void Evaluator::decrementIncrement(string str) {
 	char nextNextToken;
 	int count = 0;
 
-	for (unsigned int i = 0; i < str.length()-1; i++) {
+	for (unsigned int i = 0; i < str.length(); i++) {
 		count++;
 		currentToken = str[i];
 		nextToken = str[i + 1];
@@ -81,7 +81,7 @@ void Evaluator::decrementIncrement(string str) {
 
 }
 
-int Evaluator::parse_expression(string expression)
+/*int Evaluator::parse_expression(string expression)
 {
 	istringstream tokens(expression);
 	char next_char;
@@ -117,8 +117,18 @@ int Evaluator::parse_expression(string expression)
 	else {
 		throw Syntax_Error("Stack is empty");
 	}
+}*/
+void Evaluator::add_to_stack( int th, stack<int> stack ) {
+	if (stack == operand_stack) {
+		operand_stack.push(th);
+		cout << "pushed digit " << th << " to operand_stack" << endl;//test print
+	}
+	else
+		operator_stack.push(th);
+		cout << "pushed operator " << th << " to operator_stack" << endl;//test print
+
 }
-/*void Evaluator::parse_expression(string expression)
+void Evaluator::parse_expression(string expression)
 {
 //parse string into two stacks, int_stack and char_stacK
 	// to parse is to evaluate the string, it can do math
@@ -130,7 +140,7 @@ int Evaluator::parse_expression(string expression)
 	convert_to_int(number);
 		for (int i = 0; expression.length(); i++)
 		{
-			if (expression[i] == " ");
+			if (expression[i] == '' '');
 			else if (isdigit(expression[i]))
 			{
 				number = expression[i]; 
@@ -179,7 +189,7 @@ int Evaluator::parse_expression(string expression)
 			} 
 				
 		}
-}*/
+}
 
 // To check for Priority Got this from GitHub by kartikkukreja
 bool Evaluator::hasLowerPriority(char op1, char op2)
@@ -402,6 +412,8 @@ try {
 	{
 		bool bool_result = Evaluator::eval_bool(expression);
 		cout << expression << " = " << bool_result << endl;
+				//Evaluator::bool_mathing(bool_result);
+
 	}
 	else //integer
 	{
