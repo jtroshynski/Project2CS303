@@ -67,7 +67,7 @@ private:
 	@param op The expression
 	@return two separate stacks operator_stack and operand_stack.
 	*/
-	int parse_expression(string expression); 
+	void parse_expression(string expression); 
 	
 	/** Determines '--' or '++' occur in the expression and adds one
 	 * to the successor if so.
