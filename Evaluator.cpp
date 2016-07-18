@@ -464,7 +464,7 @@ bool Evaluator::bool_mathing_wrapper()
 	return(operator_stack.top());
 }
 
-bool Evaluator::bool_mathing() 
+bool Evaluator::bool_mathing(char op, int rhs, int lhs) 	
 //TO DO:
 //ADD UNARY OPERATOR EVALUATIONS
 {
