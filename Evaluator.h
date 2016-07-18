@@ -10,19 +10,13 @@
 #include <string>
 #include <stack>
 
-//if we don't need these list files and you guys concur go ahead and delete
-//#include "list.h"
-//#include "list_iterator.h"
-//#include "list_const_iterator.h"
 
 using namespace std;
 
 class Evaluator
 {
 private:
-	////if we don't need this list stuff and you guys concur go ahead and delete
-	//list <int> int_stack;
-	//list <char> char_stack;
+
 	
 	// Data fields
 		static const string OPERATORS;
@@ -81,6 +75,9 @@ private:
 	@return updated integer.
 	*/
 	void decrementIncrement(string str); 
+	
+	void Evaluator::add_to_stack(int th, stack<int> stack);
+
 
 	
 	
