@@ -56,7 +56,7 @@ int Evaluator::eval_int(string expression)
 //(expression[i] == '-' && expression[i + 1] == '-') || (expression[i] == '+' && expression[i + 1] == '+') ||
 //crude increment decrement 
 //not sure how to push result onto stack at the appropraite time
-int Evaluator::decrementIncrement(string str) {
+void Evaluator::decrementIncrement(string str) {
 	char firstToken = str[0];
 	char currentToken;
 	char nextToken;
@@ -68,17 +68,16 @@ int Evaluator::decrementIncrement(string str) {
 		currentToken = str[i];
 		nextToken = str[i + 1];
 		nextNextToken = str[i + 2];
-		if (currentToken == '-' && nextToken == '-') {
+		while (currentToken == '-' && nextToken == '-') {
 			nextNextToken = nextNextToken - 1;
-			cout << "decrement " << nextNextToken << endl;
+			operand_stack.push(nextNextToken);
 
 		}
-		if (currentToken == '+' && nextToken == '+') {
+		while (currentToken == '+' && nextToken == '+') {
 			nextNextToken = nextNextToken + 1;
-			cout << "increment" << nextNextToken << endl;
+			operand_stack.push(nextNextToken);
 		}
 	}
-		return nextNextToken;
 
 }
 
