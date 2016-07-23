@@ -81,7 +81,7 @@ void Evaluator::decrementIncrement(string str) {
 
 }
 
-/*int Evaluator::parse_expression(string expression)
+void Evaluator::parse_expression(string expression)
 {
 	istringstream tokens(expression);
 	char next_char;
@@ -108,7 +108,7 @@ void Evaluator::decrementIncrement(string str) {
 		int answer = operand_stack.top();
 		operand_stack.pop();
 		if (operand_stack.empty()) {
-			return answer;
+		//	return answer;
 		}
 		else {
 			throw Syntax_Error("Stack should be empty");
@@ -117,8 +117,8 @@ void Evaluator::decrementIncrement(string str) {
 	else {
 		throw Syntax_Error("Stack is empty");
 	}
-}*/
-void Evaluator::add_to_stack( int th, stack<int> stack ) {
+}
+/*void Evaluator::add_to_stack( int th, stack<int> stack ) {
 	if (stack == operand_stack) {
 		operand_stack.push(th);
 		cout << "pushed digit " << th << " to operand_stack" << endl;//test print
@@ -189,7 +189,7 @@ void Evaluator::parse_expression(string expression)
 			} 
 				
 		}
-}
+}*/
 
 // To check for Priority Got this from GitHub by kartikkukreja
 bool Evaluator::hasLowerPriority(char op1, char op2)
