@@ -14,8 +14,8 @@ using std::istringstream;
 
 using namespace std;
 
-const string Evaluator::OPERATORS = "^*/%+-&|!=<>()[]{}";
-const int Evaluator::PRECEDENCE[18] = { 7,6,6,6,5,5,2,3,3,4,-1,-1,-1,-1,-1,-1,-1,-1 };
+const string Evaluator::OPERATORS = "^*/%+-&|!=<>()[]{}ID";
+const int Evaluator::PRECEDENCE[18] = { 7,6,6,6,5,5,2,3,3,4,-1,-1,-1,-1,-1,-1,-1,-1};
 // The set of opening parentheses.
 const string OPEN = "([{";
 // The corresponding set of closing parentheses.
@@ -23,12 +23,14 @@ const string CLOSE = ")]}";
 
 Evaluator::Evaluator(){};
 
+
+//fixed check_bool to evaluate properly
 bool Evaluator::check_bool(string expression)
 {
 	//if expression contains boolean characters, return true
 	for (int i = 0; i < expression.length(); i++)
 	{
-		if ((expression[i] == '>' || '<' || '!' || '&' || '|') || (expression[i] == '=' && expression[i+1] == '='))
+		if (((expression[i] == '>') || (expression[i] == '<') || (expression[i] == '!') || (expression[i] == '&') || (expression[i] == '|')))
 		{
 			return true;
 		}
@@ -36,7 +38,7 @@ bool Evaluator::check_bool(string expression)
 	return false;
 }
 
-
+/*
 //What is the plan with eval_bool and eval_int?
 bool Evaluator::eval_bool(string expression)
 {
@@ -45,6 +47,7 @@ bool Evaluator::eval_bool(string expression)
 		return false;//temp test value
 }
 
+
 int Evaluator::eval_int(string expression)
 {
 	parse_expression(expression); //parse string into two stacks, one for integers and another for characters
@@ -52,6 +55,9 @@ int Evaluator::eval_int(string expression)
 		return 0;//temp test value
 
 }
+*/
+
+
 //Need condition to handle decrement and increment
 //(expression[i] == '-' && expression[i + 1] == '-') || (expression[i] == '+' && expression[i + 1] == '+') ||
 //crude increment decrement 
@@ -67,8 +73,7 @@ void Evaluator::decrementIncrement(string str) {
 		count++;
 		currentToken = str[i];
 		nextToken = str[i + 1];
-		nextNextToken = str[i + 2];
-		while (currentToken == '-' && nextToken == '-') {
+		if (currentToken == '-' && nextToken == '-') {
 			nextNextToken = nextNextToken - 1;
 			operand_stack.push(nextNextToken);
 
@@ -81,29 +86,53 @@ void Evaluator::decrementIncrement(string str) {
 
 }
 
+//now handles larger than one digit numbers & Increment and Decrement
 void Evaluator::parse_expression(string expression)
 {
-	istringstream tokens(expression);
-	char next_char;
-	while (tokens >> next_char) {
+	for (int i = 0; i < expression.length(); i++) {
+		char next_char = expression[i];
 		if (isdigit(next_char)) {
-			tokens.putback(next_char);
-			int value;
-			tokens >> value;
-			operand_stack.push(value);
+			string new_value;
+			new_value += next_char;
+			int j = i;
+			while (isdigit(expression[j + 1])) //find the entire number
+			{
+				new_value += expression[j + 1];
+				j++;
+			}
+			operand_stack.push(stoi(new_value));
+			//cout << "number to be added: " << new_value << endl;
 		}
 		else if (is_operator(next_char)) {
-			int result = eval_op(next_char);
+			char result = expression[i];
+			if ((next_char == '+') && (expression[i + 1] == '+'))
+			{
+				operator_stack.push('I'); //Increment
+			}
+			else if ((next_char == '-') && (expression[i + 1] == '-'))
+			{
+				operator_stack.push('D'); //Decrement
+			}
+			else if ((next_char == '&') && (expression[i + 1] == '&'))
+			{
+				operator_stack.push('&'); //And
+			}
+			else if ((next_char == '|') && (expression[i + 1] == '|'))
+			{
+				operator_stack.push('|'); //Or
+			}
+			else
+			{
+				operator_stack.push(result);
+				//cout << "operator to be added: " << result << endl;
+			}
 			
-	//add--if the next char is '--', '++', '&&', ||, '=='//hold off for now 7-14jeh
-
-			
-			operator_stack.push(result);
 		}
 		else {
 			throw Syntax_Error("Invalid character encountered");
 		}
 	}
+	/*
 	if (!operand_stack.empty()) {
 		int answer = operand_stack.top();
 		operand_stack.pop();
@@ -114,9 +143,12 @@ void Evaluator::parse_expression(string expression)
 			throw Syntax_Error("Stack should be empty");
 		}
 	}
+	
 	else {
 		throw Syntax_Error("Stack is empty");
+	
 	}
+	*/
 }
 /*void Evaluator::add_to_stack( int th, stack<int> stack ) {
 	if (stack == operand_stack) {
@@ -259,14 +291,16 @@ bool Evaluator::is_balanced(const string expression) {
 	}
 	return balanced && parenthesis_stack.empty();
 }
-
-//this function is currently called in int parse_expression 
-//This function would have popped the two operands off the operand stack and applied the operator.
-//So.. it is basically mathing()
+/*
+this function is currently called in int parse_expression 
+This function would have popped the two operands off the operand stack and applied the operator.
+So.. it is basically mathing()
 int Evaluator::eval_op(char next_char){
 	cout << "mathing " << next_char << endl;
 	return next_char;
 }
+*/
+
 
 /*	//eval_op came from postfix evaluator
 	// Jeremy, I only put this here because it looked like a good start . Do with it what you will~James
@@ -401,23 +435,15 @@ try {
 	//run code here
 ////////////////////////////////////////////
 	Evaluator::is_balanced(expression);//checks if Parenthesis are balanced. Throws error if unbalanced
-	
-
-	
 	Evaluator::parse_expression(expression);//adds characters and digits to their appropriate stacks
-
-	Evaluator::check_bool(expression); //check if expression should be evaluated as a boolean or an integer value. True = boolean, False = integer
-
 	if (Evaluator::check_bool(expression)) //boolean
 	{
-		bool bool_result = Evaluator::eval_bool(expression);
+		bool bool_result = Evaluator::bool_mathing_wrapper();
 		cout << expression << " = " << bool_result << endl;
-				//Evaluator::bool_mathing(bool_result);
-
 	}
 	else //integer
 	{
-		int int_result = Evaluator::eval_int(expression);
+		int int_result = Evaluator::int_mathing();
 		cout << expression << " = " << int_result << endl;
 	}
 
@@ -471,81 +497,32 @@ bool Evaluator::bool_mathing(char op, int rhs, int lhs)
 	while (!operator_stack.empty())
 	{
 		int result = 0;
-
+		int lhs;
 		switch (op) {
-		case ')': 
-		while (op != '(')
-		{
-			bool_mathing(operator_stack.top(), rhs, lhs);
-		}
-		case '+': result = lhs + rhs;
+		case 'I': result = rhs + 1;
 			break;
-		case '-': result = lhs - rhs;
+		case 'D': result = rhs - 1;
 			break;
-		case '*': result = lhs * rhs;
-			break;
-		case '/': 
-			if (divide_by_zero(op, rhs)) //if expression is valid
-			{
-				result = lhs / rhs;
-				break;
-			}
-			else
-			{
-				cout << "ERROR: Cannot divide by zero" << endl; //throw divide by zero error
-				break;
-			}
-
-		case '%': 
-			if (divide_by_zero(op, rhs)) //if expression is valid
-			{
-				result = lhs % rhs;
-				break;
-			}
-			else
-			{
-				cout << "ERROR: Cannot divide by zero" << endl; //throw divide by zero error
-				break;
-			}
-		case '<': result = (lhs < rhs);
-			break;
-		case '>': result = (lhs > rhs);
-			break;
-		}
-		operand_stack.push(result);
-	}
-	return(operator_stack.top());
-}
-
-
-int Evaluator::int_mathing()
-//TO DO:
-//Account for ++ and --
-{
-	while (!operator_stack.empty())
-	{
-		char op = (operator_stack.top());
-		operator_stack.pop();
-		int rhs = operand_stack.top();
-		operand_stack.pop();
-		int lhs = operand_stack.top();
-		operand_stack.pop();
-		int result = 0;
-
-		switch (op) {
-		case '+': result = lhs + rhs;
+		case '+':
+			lhs = operand_stack.top();
+			operand_stack.pop();
+			result = lhs + rhs;
 			break;
 		case '-':
-			//if next char is also - ?
-			//deal with --
-			//else
+			lhs = operand_stack.top();
+			operand_stack.pop();
 			result = lhs - rhs;
 			break;
-		case '*': result = lhs * rhs;
+		case '*':
+			lhs = operand_stack.top();
+			operand_stack.pop();
+			result = lhs * rhs;
 			break;
 		case '/':
 			if (divide_by_zero(op, rhs)) //if expression is valid
 			{
+				lhs = operand_stack.top();
+				operand_stack.pop();
 				result = lhs / rhs;
 				break;
 			}
@@ -558,7 +535,96 @@ int Evaluator::int_mathing()
 		case '%':
 			if (divide_by_zero(op, rhs)) //if expression is valid
 			{
+				lhs = operand_stack.top();
+				operand_stack.pop();
 				result = lhs % rhs;
+				break;
+			}
+
+			else
+			{
+				cout << "ERROR: Cannot divide by zero" << endl; //throw divide by zero error
+				break;
+			}
+		case '<': 
+			lhs = operand_stack.top();
+			operand_stack.pop(); 
+			result = (lhs < rhs);
+			break;
+		case '>': 
+			lhs = operand_stack.top();
+			operand_stack.pop(); 
+			result = (lhs > rhs);
+			break;
+		case '&': 
+			lhs = operand_stack.top();
+			operand_stack.pop(); 
+			result = (lhs && rhs);
+			break;
+		case '|': 
+			lhs = operand_stack.top();
+			operand_stack.pop(); 
+			result = (lhs || rhs);
+			break;
+		}
+		operator_stack.push(result);
+		cout << result << endl;
+	}
+	return(operator_stack.top());
+}
+
+//Now handles Increment and Decrement. Had to change how it handled lhs and rhs because of this
+int Evaluator::int_mathing()
+//TO DO:
+//handle parenthesis (convert to postfix?)
+{
+	while (!operator_stack.empty())
+	{
+		//cout << '2' << endl;
+		char op = (operator_stack.top());
+		operator_stack.pop();
+		int rhs = operand_stack.top();
+		int lhs;
+		operand_stack.pop();
+		int result = 0;
+
+		switch (op) {
+		case 'I':
+		{	result = rhs + 1;
+			break;
+		}
+		case 'D':
+		{	result = rhs - 1;
+			break;
+		}
+		case '+':
+		{
+			lhs = operand_stack.top();
+			operand_stack.pop();
+			result = lhs + rhs;
+			break;
+		}
+		case '-':
+		{
+			lhs = operand_stack.top();
+			operand_stack.pop();
+			result = lhs - rhs;
+			break;
+		}
+		case '*':
+		{
+			lhs = operand_stack.top();
+			operand_stack.pop();
+			result = lhs * rhs;
+			break;
+		}
+		case '/':
+		{
+			if (divide_by_zero(op, rhs)) //if expression is valid
+			{
+				lhs = operand_stack.top();
+				operand_stack.pop();
+				result = lhs / rhs;
 				break;
 			}
 			else
@@ -567,7 +633,25 @@ int Evaluator::int_mathing()
 				break;
 			}
 		}
+		case '%':
+		{
+			if (divide_by_zero(op, rhs)) //if expression is valid
+			{
+				lhs = operand_stack.top();
+				operand_stack.pop();
+				result = lhs % rhs;
+				break;
+			}
+
+			else
+			{
+				cout << "ERROR: Cannot divide by zero" << endl; //throw divide by zero error
+				break;
+			}
+		}
+		}
 		operand_stack.push(result);
+		//cout << result << endl;
 	}
-	return(operator_stack.top());
+	return(operand_stack.top());
 }

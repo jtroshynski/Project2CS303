@@ -10,7 +10,7 @@
 using namespace std;
 
 int main(){
-	string expression = "(1+2)* 6/(17+1)"; //enter in any expression in string format
+	string expression = "1+1+1+4-4"; //enter in any expression in string format
 
 	Evaluator eval1;
 	eval1.check_valid(expression);
